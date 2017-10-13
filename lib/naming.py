@@ -421,7 +421,11 @@ class Naming(object):
     data = query.split('#')     # Get the token keyword and remove any comment
     token = data[0].split()[0]  # Remove whitespace and cast from list to string
     if token not in self.networks:
-      raise UndefinedAddressError('%s %s' % ('\nUNDEFINED:', str(token)))
+      if nacaddr.IP(token):
+        returnlist.append(nacaddr.IP(token))
+        return returnlist
+      else:
+        raise UndefinedAddressError('%s %s' % ('\nUNDEFINED:', str(token)))
 
     for i in self.networks[token].items:
       comment = ''
